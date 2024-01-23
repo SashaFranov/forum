@@ -2,6 +2,10 @@
 
 namespace app\controllers;
 
+use app\entity\Users;
+use app\models\RegistrationForm;
+use app\repository\SectionRepository;
+use app\repository\UserRepository;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -61,7 +65,8 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $Sections = SectionRepository::getSection();
+        return $this->render('index', ['section' => $Sections]);
     }
 
     /**

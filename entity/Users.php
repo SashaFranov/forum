@@ -15,9 +15,10 @@ use yii\web\IdentityInterface;
 
 class Users extends \yii\db\ActiveRecord implements IdentityInterface
 {
-    public function getRequests()
+
+    public static function tableName()
     {
-        return $this->hasMany(Request::class, ['user_id' => 'id']);
+        return 'user';
     }
 
     public static function findIdentity($id)

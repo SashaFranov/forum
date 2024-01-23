@@ -3,6 +3,7 @@
 /** @var yii\web\View $this */
 
 $this->title = 'My Yii Application';
+var_dump($section);
 ?>
 <div class="site-index">
 
