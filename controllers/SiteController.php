@@ -2,9 +2,13 @@
 
 namespace app\controllers;
 
+use app\entity\Subsections;
 use app\entity\Users;
 use app\models\RegistrationForm;
+use app\repository\MessageRepository;
 use app\repository\SectionRepository;
+use app\repository\SubSectionRepository;
+use app\repository\TopicRepository;
 use app\repository\UserRepository;
 use Yii;
 use yii\filters\AccessControl;
@@ -68,7 +72,19 @@ class SiteController extends Controller
         $Sections = SectionRepository::getSection();
         return $this->render('index', ['section' => $Sections]);
     }
+    public function actionSubsection($section_id){
+        $Subsection = SubSectionRepository::getSubsection($section_id);
+        return $this->render('Subsection', ['Subsection' => $Subsection]);
+    }
+    public function actionTopic($subsection_id){
+        $Subsection = TopicRepository::getTopic($subsection_id);
+        return $this->render('Topic', ['Topic' => $Subsection]);
+    }
 
+    public function actionMessage($topic_id){
+        $Message = MessageRepository::getMessage($topic_id);
+        return $this->render('Message', ['Message' => $Message]);
+    }
     /**
      * Login action.
      *

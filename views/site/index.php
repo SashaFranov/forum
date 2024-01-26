@@ -3,9 +3,12 @@
 /** @var yii\web\View $this */
 
 $this->title = 'My Yii Application';
-var_dump($section);
+//var_dump($section);
 ?>
 <div class="site-index">
+    <?php foreach($section as $onesection): ?>
+    <div> <a href="/site/subsection?section_id=<?= $onesection -> id ?>"> <?=  $onesection -> name?> </a> </div>
+    <?php endforeach;?>
 
     <div class="jumbotron text-center bg-transparent">
         <h1 class="display-4">Congratulations!</h1>

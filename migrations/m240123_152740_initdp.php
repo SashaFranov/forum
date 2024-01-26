@@ -16,7 +16,7 @@ class m240123_152740_initdp extends Migration
             'id' => $this -> primaryKey(),
             'email' => $this ->string(100) ->notNull(),
             'password' => $this -> integer() -> notNull(),
-            'name' => $this ->integer(100) -> notNull(),
+            'name' => $this ->string(100) -> notNull(),
         ]);
 
         $this->insert('user', [
