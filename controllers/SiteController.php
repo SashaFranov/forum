@@ -4,6 +4,10 @@ namespace app\controllers;
 
 use app\entity\Subsections;
 use app\entity\Users;
+use app\models\CreateMessage;
+use app\models\CreateSection;
+use app\models\CreateSubSection;
+use app\models\CreateTopic;
 use app\models\RegistrationForm;
 use app\repository\MessageRepository;
 use app\repository\SectionRepository;
@@ -74,16 +78,30 @@ class SiteController extends Controller
     }
     public function actionSubsection($section_id){
         $Subsection = SubSectionRepository::getSubsection($section_id);
-        return $this->render('Subsection', ['Subsection' => $Subsection]);
+        return $this->render('Subsection', ['Subsection' => $Subsection,'section_id' => $section_id]);
     }
     public function actionTopic($subsection_id){
         $Subsection = TopicRepository::getTopic($subsection_id);
-        return $this->render('Topic', ['Topic' => $Subsection]);
+        return $this->render('Topic', ['Topic' => $Subsection, 'subsection_id' => $subsection_id]);
     }
 
     public function actionMessage($topic_id){
+
+
+
+        $model = new CreateMessage();
+        $model -> topic_id = $topic_id;
+        if ($model->load(Yii::$app->request->post()) && $model->valiDate()) {
+            $userId = MessageRepository::createMessage(
+                $model->content,
+                $model->topic_id,
+                Yii::$app->user->id
+            );
+            $model->content='';
+        }
         $Message = MessageRepository::getMessage($topic_id);
-        return $this->render('Message', ['Message' => $Message]);
+        return $this->render('Message', ['Message' => $Message,'model' => $model]);
+
     }
     /**
      * Login action.
@@ -161,5 +179,46 @@ class SiteController extends Controller
             'model' => $model,
         ]);
 
+    }
+    public function actionCreateSection(){
+        $model = new CreateSection();
+        if ($model->load(Yii::$app->request->post()) && $model->valiDate()) {
+            $userId = SectionRepository::createSection(
+                $model->name
+            );
+            return $this->goBack();
+        }
+        return $this->render('createSection', [
+            'model' => $model,
+        ]);
+    }
+    public function actionCreateSubsection($section_id){
+        $model = new CreateSubSection();
+        $model -> section_id = $section_id;
+        if ($model->load(Yii::$app->request->post()) && $model->valiDate()) {
+            $userId = SubSectionRepository::createSubSection(
+                $model->name,
+                $model->section_id
+            );
+            return $this->goBack();
+        }
+        return $this->render('createSection', [
+            'model' => $model,
+        ]);
+    }
+    public function actionCreateTopic($subsection_id){
+        $model = new CreateTopic();
+        $model -> subsection_id = $subsection_id;
+        if ($model->load(Yii::$app->request->post()) && $model->valiDate()) {
+            $userId = TopicRepository::createTopic(
+                $model->name,
+                $model->subsection_id,
+                Yii::$app->user->id
+            );
+            return $this->goBack();
+        }
+        return $this->render('createTopic', [
+            'model' => $model,
+        ]);
     }
 }

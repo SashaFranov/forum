@@ -6,7 +6,7 @@
 
 use yii\bootstrap4\ActiveForm;
 use yii\bootstrap4\Html;
-
+var_dump(password_hash('admin',PASSWORD_DEFAULT));
 $this->title = 'Login';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
